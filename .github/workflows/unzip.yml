@@ -1,0 +1,29 @@
+- name: unzipp
+  # You may pin to the exact commit or the version.
+  # uses: postleo/unzipp@63c79b8db207e6a4093567fb5daca0d0a20b6b25
+  uses: postleo/unzipp@v1.0.1
+  with:
+    # Root directory to search for .zip files, relative to the repository.
+    path: # optional, default is .
+    # Glob pattern (relative to `path`) used to match archives, e.g. '**/*.zip' or 'assets/*.zip'.
+    pattern: # optional, default is **/*.zip
+    # Search subdirectories of `path`. Ignored when `pattern` already contains '**'.
+    recursive: # optional, default is true
+    # Where to extract archives. Use 'alongside' to extract next to each zip, or a directory path to collect everything under one folder.
+    destination: # optional, default is alongside
+    # Extract contents directly into the destination instead of creating a subfolder named after each archive.
+    flatten: # optional, default is false
+    # Overwrite existing files when extracting. When false, existing files are kept.
+    overwrite: # optional, default is true
+    # Delete each .zip file after it has been successfully extracted.
+    delete-zip: # optional, default is false
+    # Fail the step if no matching .zip files are found.
+    fail-on-empty: # optional, default is false
+    # Commit the extracted files (and deletions) back to the current branch.
+    commit: # optional, default is false
+    # Commit message used when `commit` is true.
+    commit-message: # optional, default is chore: unzip archives [skip ci]
+    # Git user.name used for the commit.
+    commit-user-name: # optional, default is github-actions[bot]
+    # Git user.email used for the commit.
+    commit-user-email: # optional, default is github-actions[bot]@users.noreply.github.com
