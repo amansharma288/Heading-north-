@@ -1,10 +1,15 @@
-name: Unzip File
+name: Unzip and Commit
 
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: write
 
 jobs:
   unzip:
-    runs-on: ubuntu-latest  # must be ubuntu for unzip to work easily
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -12,10 +17,18 @@ jobs:
 
       - name: Unzip file
         run: |
-          unzip -o myfile.zip -d ./extracted/
-          
-      # If unzip is missing (rare), install it first:
-      # run: |
-      #   sudo apt-get update
-      #   sudo apt-get install -y unzip
-      #   unzip -o myfile.zip -d ./extracted/
+          unzip -o myfile.zip -d extracted
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add extracted/
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Unzip files"
+            git push
+          fi
