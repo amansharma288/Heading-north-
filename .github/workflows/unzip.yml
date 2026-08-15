@@ -1,14 +1,21 @@
-name: Auto Unzip
-on:
-push:
-paths:
-- '*.zip'
-permissions:
-contents: write
+name: Unzip File
+
+on: [push, workflow_dispatch]
+
 jobs:
-unzip:
-runs-on: ubuntu-latest
-steps:
-- uses: actions/checkout@v4
-- name: Extract And Push
-run: unzip -o "*.zip" && rm "*.zip" && git config user.name "github-actions[bot]" && git config user.email "github-actions[bot]@users.noreply.github.com" && git add . && (git diff --staged --quiet || (git commit -m "Unzipped files" && git push))
+  unzip:
+    runs-on: ubuntu-latest  # must be ubuntu for unzip to work easily
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Unzip file
+        run: |
+          unzip -o myfile.zip -d ./extracted/
+          
+      # If unzip is missing (rare), install it first:
+      # run: |
+      #   sudo apt-get update
+      #   sudo apt-get install -y unzip
+      #   unzip -o myfile.zip -d ./extracted/
