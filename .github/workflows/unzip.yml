@@ -1,8 +1,11 @@
-name: Unzip and Commit
+name: Unzip to root
 
 on:
   workflow_dispatch:
   push:
+    paths:
+      - 'myfile.zip'
+      - '.github/workflows/**'
 
 permissions:
   contents: write
@@ -15,22 +18,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Unzip file
-        run: |
-          unzip -o myfile.zip -d extracted
-      - name: Commit extracted files
+      - name: Unzip file into repository root
+        run: unzip -o myfile.zip -d .
+
+      - name: Delete old extracted folder
+        run: rm -rf extracted
+
+      - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add extracted/
+          git add -A
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Unzip files"
+            git commit -m "Move files to repository root"
             git push
-          fi
-      - name: 
-        uses: actions/upload-artifact@v4
-        with:
-          name: extracted-files
-          path: /
