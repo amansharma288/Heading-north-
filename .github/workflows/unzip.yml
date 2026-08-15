@@ -1,37 +1,14 @@
-name: Unzip ZIP to Root
+name: Auto Unzip
 on:
-  workflow_dispatch:
-
+push:
+paths:
+- '*.zip'
 permissions:
-  contents: write
-
+contents: write
 jobs:
-  unzip:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          fetch-depth: 0
-
-      - name: Show workspace (for debugging)
-        run: ls -la
-
-      - name: Unzip file into root
-        run: |
-          # update the filename if needed
-          unzip -o myfile.zip -d .
-          ls -la
-
-      - name: Commit unzipped files
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Extract zip files to root"
-            git push
-          fi
+unzip:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- name: Extract Move And Push
+run: unzip -o "*.zip" && rm "*.zip" && find . -mindepth 2 -type f -exec mv {} . ; && find . -type d -empty -delete && git config user.name "github-actions[bot]" && git config user.email "github-actions[bot]@users.noreply.github.com" && git add . && (git diff --staged --quiet || (git commit -m "Moved files to root" && git push))
