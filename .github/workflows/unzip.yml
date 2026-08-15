@@ -1,8 +1,7 @@
-name: Unzip and Commit
+name: Unzip ZIP to Root
 
 on:
   workflow_dispatch:
-  push:
 
 permissions:
   contents: write
@@ -13,28 +12,23 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
-      - name: Unzip file
+      - name: Unzip file into root
         run: |
-          unzip -o myfile.zip -d extracted
+          unzip -o myfile.zip -d .
+          ls -la
 
-      - name: Commit extracted files
+      - name: Commit unzipped files
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          git add extracted/
+          git add -A
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Unzip files"
+            git commit -m "Extract zip files to root"
             git push
           fi
-
-      - name: Upload extracted files
-        uses: actions/upload-artifact@v4
-        with:
-          name: extracted-files
-          path: extracted/                
