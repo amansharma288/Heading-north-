@@ -64,10 +64,10 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="md:hidden p-2 text-white/50 hover:text-white transition-colors"
+            className="md:hidden p-2 text-white hover:text-white transition-colors"
             aria-label="Open menu"
           >
-            <Menu size={22} />
+            <Menu size={26} />
           </button>
         </nav>
       </motion.header>
@@ -84,10 +84,10 @@ export default function Navbar() {
           >
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-6 right-6 p-2 text-white/50 hover:text-white"
+              className="absolute top-6 right-6 p-2 text-white hover:text-white"
               aria-label="Close menu"
             >
-              <X size={24} />
+              <X size={26} />
             </button>
             <nav className="flex flex-col items-center gap-6">
               {navLinks.map((link, i) => (
