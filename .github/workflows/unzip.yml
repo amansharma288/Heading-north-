@@ -34,3 +34,4 @@ jobs:
           else
             git commit -m "Move files to repository root"
             git push
+            fi
