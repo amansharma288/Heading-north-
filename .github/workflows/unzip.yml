@@ -1,4 +1,4 @@
-name: Unzip to root
+{name: Unzip to root
 
 on:
   workflow_dispatch:
@@ -34,4 +34,4 @@ jobs:
           else
             git commit -m "Move files to repository root"
             git push
-            fi
+            fi}
